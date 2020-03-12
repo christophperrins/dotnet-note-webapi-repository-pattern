@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.Persistence.Entity
+namespace src.Persistence.Model
 {
     public class Note
     {

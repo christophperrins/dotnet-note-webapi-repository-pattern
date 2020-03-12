@@ -14,10 +14,10 @@ using AutoMapper;
 
 using src.Data;
 using Microsoft.EntityFrameworkCore;
-using src.Persistence.Entity;
 using src.Dto;
 using src.Persistence.Repository;
 using src.Services;
+using src.Persistence.Model;
 
 namespace src
 {

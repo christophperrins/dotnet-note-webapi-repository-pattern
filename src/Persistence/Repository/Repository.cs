@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using src.Data;
-using src.Persistence.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +21,7 @@ namespace src.Persistence.Repository
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
+
         public async Task<List<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
@@ -29,25 +29,25 @@ namespace src.Persistence.Repository
 
         public async Task<TEntity> GetSingleAsync(int id)
         {
-            TEntity entity = await _dbSet.FindAsync(id);
-            return entity;
-        }
-        public async Task<int> AddAsync(TEntity entity)
-        {
-            _dbSet.Add(entity);
-            return await _context.SaveChangesAsync();
+            return await _dbSet.FindAsync(id);
         }
 
-        public async Task<int> DeleteAsync(int id)
+        public async Task AddAnEntityAsync(TEntity entity)
         {
-            TEntity entity = await GetSingleAsync(id);
+            await _dbSet.AddAsync(entity);
+        }
+
+        public void Delete(TEntity entity)
+        {
             _dbSet.Remove(entity);
-            return await _context.SaveChangesAsync();
         }
-
-        public async Task<int> UpdateAsync(TEntity entity)
+        public void Update(TEntity entity)
         {
             _dbSet.Update(entity);
+        }
+
+        public async Task<int> Save()
+        {
             return await _context.SaveChangesAsync();
         }
     }

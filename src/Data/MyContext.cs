@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using src.Persistence.Entity;
+using src.Persistence.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;

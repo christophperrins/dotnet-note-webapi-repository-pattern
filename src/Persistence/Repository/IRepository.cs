@@ -1,5 +1,4 @@
-﻿using src.Persistence.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,11 +11,12 @@ namespace src.Persistence.Repository
 
         public Task<TEntity> GetSingleAsync(int id);
 
-        public Task<int> AddAsync(TEntity entity);
+        public Task AddAnEntityAsync(TEntity entity);
 
-        public Task<int> DeleteAsync(int id);
+        public void Delete(TEntity entity);
 
-        public Task<int> UpdateAsync(TEntity entity);
+        public void Update(TEntity entity);
         
+        public Task<int> Save();
     }
 }

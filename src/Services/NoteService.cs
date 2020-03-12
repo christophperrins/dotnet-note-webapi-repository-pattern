@@ -1,4 +1,4 @@
-﻿using src.Persistence.Entity;
+﻿using src.Persistence.Model;
 using src.Persistence.Repository;
 using System;
 using System.Collections.Generic;
@@ -15,30 +15,34 @@ namespace src.Services
             _repository = repository;
         }
 
-        public async Task<int> CreateNote(Note note)
-        {
-            return await _repository.AddAsync(note);
-        }
-
-        public async Task<int> DeleteNote(int id)
-        {
-            return await _repository.DeleteAsync(id);
-        }
-
-        
-        public async Task<List<Note>> GetAllNotes()
+        public async Task<List<Note>> GetAllNotesAsync()
         {
             return await _repository.GetAllAsync();
         }
 
-        public async Task<Note> GetNote(int id)
+        public async Task<Note> GetNoteAsync(int id)
         {
             return await _repository.GetSingleAsync(id);
         }
 
+        public async Task AddNoteToDb(Note note)
+        {
+            await _repository.AddAnEntityAsync(note);
+        }
+
+        public async Task<int> DeleteNote(int id)
+        {
+            Note note = await _repository.GetSingleAsync(id);
+            _repository.Delete(note);
+            return await _repository.Save();
+        }
+        
         public async Task<int> UpdateNote(Note note)
         {
-            return await _repository.UpdateAsync(note);
+            _repository.Update(note);
+            return await _repository.Save();
         }
+
+
     }
 }
