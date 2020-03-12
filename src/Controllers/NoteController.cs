@@ -38,7 +38,7 @@ namespace src.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<NoteDto> GetAsync(int id)
+        public async Task<NoteDto> GetAsync([FromRoute] int id)
         {
             Note note = await _noteService.GetNoteAsync(id);
             return _mapper.Map<NoteDto>(note);
@@ -60,7 +60,7 @@ namespace src.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<int> DelettyAsync(int id)
+        public async Task<int> DelettyAsync([FromRoute] int id)
         {
             return await _noteService.DeleteNote(id);
         }
