@@ -48,7 +48,7 @@ namespace src
 
             services.AddTransient<IMapper>(sp => mapper);
             services.AddTransient<IRepository<Note>, Repository<Note>>();
-            services.AddTransient<INoteService, NoteService>();
+            services.AddTransient<NoteService>();
 
             services.AddDbContext<MyContext>(options => options.UseMySql(Configuration.GetConnectionString("MySql")));
             services.AddControllers();
