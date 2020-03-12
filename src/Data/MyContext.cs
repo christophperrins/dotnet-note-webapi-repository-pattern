@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using src.Model.Entity;
+using src.Persistence.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,5 @@ namespace src.Data
         }
 
         public DbSet<Note> Note { get; set; }
-
     }
 }

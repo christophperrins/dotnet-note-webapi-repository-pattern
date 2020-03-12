@@ -11,10 +11,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
-using src.Model.Entity;
-using src.Model.Dto;
+
 using src.Data;
 using Microsoft.EntityFrameworkCore;
+using src.Persistence.Entity;
+using src.Dto;
+using src.Persistence.Repository;
+using src.Services;
 
 namespace src
 {
@@ -43,7 +46,10 @@ namespace src
             var mapper = configuration.CreateMapper();
             
 
-            services.AddSingleton<IMapper>(sp => mapper);
+            services.AddTransient<IMapper>(sp => mapper);
+            services.AddTransient<IRepository<Note>, Repository<Note>>();
+            services.AddTransient<INoteService, NoteService>();
+
             services.AddDbContext<MyContext>(options => options.UseMySql(Configuration.GetConnectionString("MySql")));
             services.AddControllers();
             services.AddSwaggerDocument();

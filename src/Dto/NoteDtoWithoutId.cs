@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace src.Model.Dto
+namespace src.Dto
 {
     public class NoteDtoWithoutId
     {

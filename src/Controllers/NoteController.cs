@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using src.Data;
-using src.Model.Dto;
-using src.Model.Entity;
+using src.Dto;
+using src.Persistence.Entity;
+using src.Services;
 
 namespace src.Controllers
 {
@@ -19,19 +20,20 @@ namespace src.Controllers
 
         private readonly ILogger<NoteController> _logger;
         private readonly IMapper _mapper;
-        private readonly MyContext _context;
+        private readonly NoteService _noteService;
 
-        public NoteController(ILogger<NoteController> logger, IMapper mapper, MyContext context)
+        public NoteController(ILogger<NoteController> logger, IMapper mapper, NoteService noteService)
         {
             _logger = logger;
             _mapper = mapper;
-            _context = context;
+            _noteService = noteService;
         }
 
         [HttpGet]
         public async Task<List<NoteDto>> GetAll()
         {
-            List<Note> notes = await _context.Note.ToListAsync();
+            List<Note> list = await _noteService.GetAllNotes();
+            List<Note> notes = list;
             return _mapper.Map<List<NoteDto>>(notes);
         }
 
@@ -39,7 +41,7 @@ namespace src.Controllers
         [Route("{id}")]
         public async Task<NoteDto> GetAsync(int id)
         {
-            Note note = await _context.Note.FindAsync(id);
+            Note note = await _noteService.GetNote(id);
             return _mapper.Map<NoteDto>(note);
         }
 
@@ -47,22 +49,20 @@ namespace src.Controllers
         public async Task<int> PostyAsync([FromBody] NoteDtoWithoutId noteDto)
         {
             Note note = _mapper.Map<Note>(noteDto);
-            _context.Note.Add(note);
-            return await _context.SaveChangesAsync();
+            return await _noteService.CreateNote(note);
         }
 
         [HttpPut]
         public async Task<int> Putty([FromBody] NoteDto noteDto)
         {
             Note note = _mapper.Map<Note>(noteDto);
-            _context.Note.Update(note);
-            return await _context.SaveChangesAsync();
+            return await _noteService.UpdateNote(note);
         }
 
         //[HttpPut]
         //public async Task<int> PuttyAlso([FromBody] NoteDto noteDto)
         //{
-        //    Note noteEntity = await _context.Note.FirstAsync(note => note.Id == noteDto.Id);
+        //    Note noteEntity = await _context.Note.FirstAsync(note => note.Id == noteDto.Id)
         //    noteEntity.Text = noteDto.Text;
         //    return await _context.SaveChangesAsync();
         //}
@@ -71,9 +71,7 @@ namespace src.Controllers
         [Route("{id}")]
         public async Task<int> DelettyAsync(int id)
         {
-            Note note = await _context.Note.FindAsync(id);
-            _context.Note.Remove(note);
-            return await _context.SaveChangesAsync();
+            return await _noteService.DeleteNote(id);
         }
     }
 }
